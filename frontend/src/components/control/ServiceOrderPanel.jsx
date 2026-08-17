@@ -93,12 +93,12 @@ export default function ServiceOrderPanel() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="px-3 py-2 text-xs uppercase tracking-wide text-ink-600 border-b border-ink-800">
+      <div className="px-3 py-2 text-xs uppercase tracking-wide text-slate-600 border-b border-slate-800">
         Service order
       </div>
       <div className="flex-1 overflow-y-auto p-2">
         {serviceOrder.length === 0 && (
-          <p className="text-ink-600 text-sm px-2 py-4">
+          <p className="text-slate-600 text-sm px-2 py-4">
             Queue is empty — add songs or verses from the left.
           </p>
         )}

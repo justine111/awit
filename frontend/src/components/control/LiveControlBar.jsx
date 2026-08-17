@@ -34,16 +34,16 @@ export default function LiveControlBar() {
   useHotkeys("escape", () => clearScreen());
 
   return (
-    <div className="border-t border-ink-800 bg-ink-900 px-4 py-3 flex items-center gap-4">
-      <div className="w-40 aspect-video rounded-md overflow-hidden border border-ink-700 shrink-0">
+    <div className="border-t border-slate-800 bg-slate-900 px-4 py-3 flex items-center gap-4">
+      <div className="w-40 aspect-video rounded-md overflow-hidden border border-slate-700 shrink-0">
         <SlideRenderer status={liveState} slide={slide} theme={theme} />
       </div>
 
       <div className="flex-1 min-w-0">
-        <div className="text-sm text-ink-50 truncate">
+        <div className="text-sm text-slate-50 truncate">
           {item ? `${item.title} — ${slide?.label ?? ""}` : "Nothing live"}
         </div>
-        <div className="text-xs text-ink-600">
+        <div className="text-xs text-slate-600">
           Space / → next · ← previous · B blackout · Esc clear
         </div>
       </div>

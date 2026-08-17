@@ -4,7 +4,12 @@ import { getChannel, MSG } from "@/lib/broadcast";
 const channel = getChannel();
 
 const DEFAULT_THEME = {
-  background: "#0a0c10",
+  // backgroundMode: 'color' | 'animated' | 'image' | 'video'
+  backgroundMode: "color",
+  background: "#0a0c10", // used when backgroundMode === 'color'
+  animatedPreset: "aurora", // used when backgroundMode === 'animated'
+  mediaId: null, // used when backgroundMode === 'image' | 'video' (id in the `media` Dexie table)
+  overlayOpacity: 0.45, // dark scrim over image/video/animated so text stays readable
   textColor: "#f5f2ea",
   accentColor: "#f0b45c",
   fontSize: "clamp(2.2rem, 5vw, 4.5rem)",

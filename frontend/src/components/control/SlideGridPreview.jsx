@@ -11,7 +11,7 @@ export default function SlideGridPreview() {
 
   if (!item) {
     return (
-      <div className="h-full flex items-center justify-center text-ink-600 text-sm">
+      <div className="h-full flex items-center justify-center text-slate-600 text-sm">
         Select an item from the service order to see its slides.
       </div>
     );
@@ -19,7 +19,7 @@ export default function SlideGridPreview() {
 
   return (
     <div className="h-full overflow-y-auto p-4">
-      <div className="text-xs uppercase tracking-wide text-ink-600 mb-3">
+      <div className="text-xs uppercase tracking-wide text-slate-600 mb-3">
         {item.title}
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">

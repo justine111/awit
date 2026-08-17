@@ -49,7 +49,7 @@ export default function SongLibraryPanel() {
 
       <div className="flex-1 overflow-y-auto px-3 pb-3 space-y-1">
         {results.length === 0 && (
-          <p className="text-ink-600 text-sm px-1 py-4">
+          <p className="text-slate-600 text-sm px-1 py-4">
             No songs yet — add one to get started.
           </p>
         )}

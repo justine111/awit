@@ -264,3 +264,80 @@ code {
     @apply font-sans;
   }
 }
+
+/* --- "Live wallpaper" animated background presets -----------------
+   No video file needed — a slow-moving gradient that reads as motion
+   from the back of a room without competing with the text on top. */
+
+.bg-anim-aurora {
+  background: linear-gradient(
+    120deg,
+    #0a0c10,
+    #14304a,
+    #1b1f28,
+    #2c4a3e,
+    #0a0c10
+  );
+  background-size: 400% 400%;
+  animation: bgFlow 22s ease-in-out infinite;
+}
+
+.bg-anim-embers {
+  background: linear-gradient(
+    120deg,
+    #1b120a,
+    #4a2314,
+    #c07a26,
+    #2a1408,
+    #0a0c10
+  );
+  background-size: 400% 400%;
+  animation: bgFlow 18s ease-in-out infinite;
+}
+
+.bg-anim-midnight {
+  background: linear-gradient(
+    120deg,
+    #05060a,
+    #0d1a3a,
+    #1b1f28,
+    #241a3a,
+    #05060a
+  );
+  background-size: 400% 400%;
+  animation: bgFlow 26s ease-in-out infinite;
+}
+
+.bg-anim-dawn {
+  background: linear-gradient(
+    120deg,
+    #1b1030,
+    #4a2340,
+    #c07a26,
+    #2c1a3e,
+    #1b1030
+  );
+  background-size: 400% 400%;
+  animation: bgFlow 20s ease-in-out infinite;
+}
+
+@keyframes bgFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-anim-aurora,
+  .bg-anim-embers,
+  .bg-anim-midnight,
+  .bg-anim-dawn {
+    animation: none;
+  }
+}

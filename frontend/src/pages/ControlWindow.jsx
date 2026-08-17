@@ -5,6 +5,7 @@ import BibleBrowserPanel from "@/components/control/BibleBrowserPanel";
 import ServiceOrderPanel from "@/components/control/ServiceOrderPanel";
 import SlideGridPreview from "@/components/control/SlideGridPreview";
 import LiveControlBar from "@/components/control/LiveControlBar";
+import ThemeSettingsPanel from "@/components/control/ThemeSettingPanel";
 
 import { Button } from "@/components/ui/button";
 import { RadioTower } from "lucide-react";
@@ -14,7 +15,7 @@ export default function ControlWindow() {
   const displayWinRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Awit Slide";
+    document.title = "VerseSide — Control";
     seedIfEmpty();
   }, []);
 
@@ -22,58 +23,68 @@ export default function ControlWindow() {
     const url = `${window.location.origin}${window.location.pathname}#/display`;
     displayWinRef.current = window.open(
       url,
-      "Awit Slide",
+      "verseside-display",
       "width=1280,height=720,menubar=no,toolbar=no,location=no,status=no",
     );
   }
 
   return (
-    <div className="h-screen flex flex-col bg-slate-950 text-ink-50">
+    <div className="h-screen flex flex-col bg-slate-950 text-slate-50">
       <header className="h-14 shrink-0 flex items-center justify-between px-4 border-b border-slate-800">
-        <div className="font-display text-lg text-white tracking-wide">
-          Awit<span className="text-ember-400">Slide</span>
+        <div className="flex flex-col items-start">
+          <div className="font-display font-black text-lg tracking-tight">
+            Verse<span className="text-amber-400">Side</span>
+          </div>
+          <p className="text-[9px] text-slate-300 tracking-wider leading-none">
+            LYRICS + SCRIPT, LIVE
+          </p>
         </div>
         <Button
           onClick={openDisplayWindow}
-          className="px-3 py-2 rounded-lg bg-amber-500 text-slate-900 text-sm uppercase font-bold hover:bg-ember-400"
+          variant="amber"
+          className="px-4 py-2 h-8 rounded-lg bg-amber-500 text-slate-950 text-sm font-bold hover:bg-ember-400"
         >
-          Go Live <RadioTower className="ml-2 h-4 w-4" />
+          Go Live <RadioTower className="w-4 h-4 ml-1" />
         </Button>
       </header>
 
       <div className="flex-1 flex min-h-0">
+        {/* Left: library / bible search */}
         <div className="w-80 shrink-0 border-r border-slate-800 flex flex-col min-h-0">
           <div className="flex border-b border-slate-800">
             <button
               onClick={() => setTab("songs")}
-              className={`flex-1 py-2.5 text-sm ${tab === "songs" ? "text-amber-400 border-b-2 border-amber-500" : "text-slate-100"}`}
+              className={`flex-1 py-2.5 text-sm ${tab === "songs" ? "text-ember-400 border-b-2 border-ember-500" : "text-slate-600"}`}
             >
               Songs
             </button>
             <button
               onClick={() => setTab("bible")}
-              className={`flex-1 py-2.5 text-sm ${tab === "bible" ? "text-amber-400 border-b-2 border-amber-500" : "text-slate-100"}`}
+              className={`flex-1 py-2.5 text-sm ${tab === "bible" ? "text-ember-400 border-b-2 border-ember-500" : "text-slate-600"}`}
             >
               Bible
             </button>
             <button
-              onClick={() => setTab("favorites")}
-              className={`flex-1 py-2.5 text-sm ${tab === "favorites" ? "text-amber-400 border-b-2 border-amber-500" : "text-slate-100"}`}
+              onClick={() => setTab("background")}
+              className={`flex-1 py-2.5 text-sm ${tab === "background" ? "text-ember-400 border-b-2 border-ember-500" : "text-slate-600"}`}
             >
-              Favorites
+              Background
             </button>
           </div>
           <div className="flex-1 min-h-0">
-            {tab === "songs" ? <SongLibraryPanel /> : <BibleBrowserPanel />}
+            {tab === "songs" && <SongLibraryPanel />}
+            {tab === "bible" && <BibleBrowserPanel />}
+            {tab === "background" && <ThemeSettingsPanel />}
           </div>
         </div>
+
         {/* Middle: slide grid for the selected item */}
         <div className="flex-1 min-w-0 flex flex-col">
           <SlideGridPreview />
         </div>
 
         {/* Right: service order queue */}
-        <div className="w-72 shrink-0 border-l border-ink-800 min-h-0">
+        <div className="w-72 shrink-0 border-l border-slate-800 min-h-0">
           <ServiceOrderPanel />
         </div>
       </div>
