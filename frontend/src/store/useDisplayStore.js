@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getChannel, MSG } from "@lib/broadcast";
+import { getChannel, MSG } from "@/lib/broadcast";
 
 const channel = getChannel();
 

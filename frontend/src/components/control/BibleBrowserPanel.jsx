@@ -3,6 +3,9 @@ import Fuse from "fuse.js";
 import { sampleVerses } from "@/data/sampleVerses";
 import { useControlStore } from "@/store/useControlStore";
 
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
 // NOTE: sampleVerses is a tiny demo set. Swap it for a full public-domain
 // translation (WEB/KJV/ASV) JSON file with the same { book, chapter, verse,
 // text } shape and everything here keeps working unchanged.
@@ -32,11 +35,11 @@ export default function BibleBrowserPanel() {
   return (
     <div className="flex flex-col h-full">
       <div className="p-3">
-        <input
+        <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search verses or type a book name…"
-          className="w-full bg-ink-800 border border-ink-700 rounded-lg px-3 py-2 text-sm text-ink-50 outline-none focus:border-ember-500"
+          className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 h-8 text-sm text-slate-50 outline-none focus:border-ember-500"
         />
       </div>
 
@@ -47,10 +50,10 @@ export default function BibleBrowserPanel() {
             <button
               key={ref}
               onClick={() => handleAdd(v)}
-              className="w-full text-left px-3 py-2 rounded-lg hover:bg-ink-800 text-sm group"
+              className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-800 text-sm group"
             >
-              <div className="text-ember-400 text-xs mb-0.5">{ref}</div>
-              <div className="text-ink-50/80 line-clamp-2">{v.text}</div>
+              <div className="text-amber-400 text-xs mb-0.5">{ref}</div>
+              <div className="text-slate-50/80 line-clamp-2">{v.text}</div>
             </button>
           );
         })}

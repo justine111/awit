@@ -29,20 +29,20 @@ export default function SlideGridPreview() {
             <button
               key={i}
               onClick={() => goToSlide(i)}
-              className={`text-left aspect-video rounded-lg p-3 bg-ink-950 border-2 flex flex-col justify-between overflow-hidden ${
+              className={`text-left aspect-video rounded-lg p-3 bg-slate-950 border-2 flex flex-col justify-between overflow-hidden ${
                 isLive
-                  ? "border-ember-500"
-                  : "border-ink-700 hover:border-ink-600"
+                  ? "border-amber-500"
+                  : "border-slate-700 hover:border-slate-600"
               }`}
             >
               <span
                 className={`text-[10px] uppercase tracking-wide ${
-                  isLive ? "text-ember-400" : "text-ink-600"
+                  isLive ? "text-amber-400" : "text-slate-600"
                 }`}
               >
                 {slide.label}
               </span>
-              <span className="text-ink-50 text-xs leading-snug line-clamp-4 font-display">
+              <span className="text-slate-50 text-xs leading-snug line-clamp-4 font-display">
                 {slide.lines.join(" ")}
               </span>
             </button>

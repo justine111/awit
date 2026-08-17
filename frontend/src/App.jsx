@@ -1,6 +1,6 @@
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import ControlWindow from "@/pages/ControlWindow";
-//import DisplayWindow from "@/pages/DisplayWindow";
+import DisplayWindow from "@/pages/DisplayWindow";
 
 // Two "pages" that are really two separate app modes:
 //  - /control  the operator's panel (search, queue, next/prev)
@@ -14,7 +14,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/control" replace />} />
         <Route path="/control" element={<ControlWindow />} />
-        {/* <Route path="/display" element={<DisplayWindow />} /> */}
+        <Route path="/display" element={<DisplayWindow />} />
       </Routes>
     </HashRouter>
   );

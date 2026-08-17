@@ -37,14 +37,14 @@ function Row({ item, index, isActive, onSelect, onRemove }) {
       style={style}
       className={`flex items-center gap-2 px-2 py-2 rounded-lg group ${
         isActive
-          ? "bg-ember-500/15 border border-ember-500/40"
-          : "hover:bg-ink-800 border border-transparent"
+          ? "bg-amber-500/15 border border-amber-500/40"
+          : "hover:bg-slate-800 border border-transparent"
       }`}
     >
       <button
         {...attributes}
         {...listeners}
-        className="cursor-grab text-ink-600 px-1 select-none"
+        className="cursor-grab text-slate-600 px-1 select-none"
         title="Drag to reorder"
       >
         ⠿
@@ -53,15 +53,15 @@ function Row({ item, index, isActive, onSelect, onRemove }) {
         onClick={() => onSelect(index)}
         className="flex-1 text-left min-w-0"
       >
-        <div className="text-sm text-ink-50 truncate">{item.title}</div>
-        <div className="text-xs text-ink-600">
+        <div className="text-sm text-slate-50 truncate">{item.title}</div>
+        <div className="text-xs text-slate-600">
           {item.type === "song" ? "Song" : "Verse"} · {item.slides.length} slide
           {item.slides.length !== 1 ? "s" : ""}
         </div>
       </button>
       <button
         onClick={() => onRemove(item.id)}
-        className="text-ink-600 hover:text-red-400 opacity-0 group-hover:opacity-100 px-2 text-sm"
+        className="text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 px-2 text-sm"
         title="Remove from service"
       >
         ✕
