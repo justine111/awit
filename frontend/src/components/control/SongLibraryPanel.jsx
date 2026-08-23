@@ -30,17 +30,18 @@ export default function SongLibraryPanel() {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-card">
       <div className="p-3 flex gap-2">
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search songs…"
-          className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 h-8 text-sm text-slate-50 outline-none focus:border-ember-500"
+          className="flex-1 bg-transparent text-foreground border border-input placeholder:text-muted-foreground focus-visible:border-ring outline-none h-8 text-sm"
         />
         <Button
           onClick={() => setEditorOpen(true)}
-          className="shrink-0 px-3 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 h-8 text-sm text-slate-50 outline-none focus:border-ember-500"
+          variant="outline"
+          className="shrink-0 px-3 py-2 rounded-lg h-8 text-sm outline-none cursor-pointer"
           title="Add a new song"
         >
           + Add
@@ -49,7 +50,7 @@ export default function SongLibraryPanel() {
 
       <div className="flex-1 overflow-y-auto px-3 pb-3 space-y-1">
         {results.length === 0 && (
-          <p className="text-slate-600 text-sm px-1 py-4">
+          <p className="text-muted-foreground text-sm px-1 py-4">
             No songs yet — add one to get started.
           </p>
         )}
@@ -57,10 +58,10 @@ export default function SongLibraryPanel() {
           <button
             key={song.id}
             onClick={() => handleAdd(song)}
-            className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-50 text-sm flex items-center justify-between group"
+            className="w-full text-left px-3 py-2 rounded-lg hover:bg-muted text-foreground text-sm flex items-center justify-between group cursor-pointer"
           >
-            <span className="truncate">{song.title}</span>
-            <span className="text-slate-600 opacity-0 group-hover:opacity-100 text-xs">
+            <span className="truncate font-medium">{song.title}</span>
+            <span className="text-muted-foreground opacity-0 group-hover:opacity-100 text-xs transition-opacity">
               + queue
             </span>
           </button>

@@ -9,7 +9,7 @@
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
-  --border: oklch(0.922 0 0);
+  --border: #9ca3af;
   --code-bg: #f4f3ec;
   --accent: oklch(0.97 0 0);
   --accent-bg: rgba(170, 59, 255, 0.1);
@@ -64,7 +64,7 @@
 
   --destructive: oklch(0.577 0.245 27.325);
 
-  --input: oklch(0.922 0 0);
+  --input: #9ca3af;
 
   --ring: oklch(0.708 0 0);
 
@@ -92,7 +92,7 @@
 
   --sidebar-accent-foreground: oklch(0.205 0 0);
 
-  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-border: #9ca3af;
 
   --sidebar-ring: oklch(0.708 0 0);
 }
@@ -102,7 +102,7 @@
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;
-    --border: #2e303a;
+    --border: #c8d3e4;
     --code-bg: #1f2028;
     --accent: #c084fc;
     --accent-bg: rgba(192, 132, 252, 0.15);
@@ -143,20 +143,24 @@ h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
+
   @media (max-width: 1024px) {
     font-size: 36px;
     margin: 20px 0;
   }
 }
+
 h2 {
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
+
   @media (max-width: 1024px) {
     font-size: 20px;
   }
 }
+
 p {
   margin: 0;
 }
@@ -257,9 +261,11 @@ code {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
@@ -270,53 +276,45 @@ code {
    from the back of a room without competing with the text on top. */
 
 .bg-anim-aurora {
-  background: linear-gradient(
-    120deg,
-    #0a0c10,
-    #14304a,
-    #1b1f28,
-    #2c4a3e,
-    #0a0c10
-  );
+  background: linear-gradient(120deg,
+      #0a0c10,
+      #14304a,
+      #1b1f28,
+      #2c4a3e,
+      #0a0c10);
   background-size: 400% 400%;
   animation: bgFlow 22s ease-in-out infinite;
 }
 
 .bg-anim-embers {
-  background: linear-gradient(
-    120deg,
-    #1b120a,
-    #4a2314,
-    #c07a26,
-    #2a1408,
-    #0a0c10
-  );
+  background: linear-gradient(120deg,
+      #1b120a,
+      #4a2314,
+      #c07a26,
+      #2a1408,
+      #0a0c10);
   background-size: 400% 400%;
   animation: bgFlow 18s ease-in-out infinite;
 }
 
 .bg-anim-midnight {
-  background: linear-gradient(
-    120deg,
-    #05060a,
-    #0d1a3a,
-    #1b1f28,
-    #241a3a,
-    #05060a
-  );
+  background: linear-gradient(120deg,
+      #05060a,
+      #0d1a3a,
+      #1b1f28,
+      #241a3a,
+      #05060a);
   background-size: 400% 400%;
   animation: bgFlow 26s ease-in-out infinite;
 }
 
 .bg-anim-dawn {
-  background: linear-gradient(
-    120deg,
-    #1b1030,
-    #4a2340,
-    #c07a26,
-    #2c1a3e,
-    #1b1030
-  );
+  background: linear-gradient(120deg,
+      #1b1030,
+      #4a2340,
+      #c07a26,
+      #2c1a3e,
+      #1b1030);
   background-size: 400% 400%;
   animation: bgFlow 20s ease-in-out infinite;
 }
@@ -325,15 +323,18 @@ code {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .bg-anim-aurora,
   .bg-anim-embers,
   .bg-anim-midnight,

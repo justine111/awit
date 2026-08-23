@@ -35,33 +35,33 @@ function Row({ item, index, isActive, onSelect, onRemove }) {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-2 px-2 py-2 rounded-lg group ${
+      className={`flex items-center gap-2 px-2 py-2 rounded-lg group transition-colors ${
         isActive
-          ? "bg-amber-500/15 border border-amber-500/40"
-          : "hover:bg-slate-800 border border-transparent"
+          ? "bg-amber-500/10 border border-amber-500/30"
+          : "hover:bg-muted border border-transparent"
       }`}
     >
       <button
         {...attributes}
         {...listeners}
-        className="cursor-grab text-slate-600 px-1 select-none"
+        className="cursor-grab text-muted-foreground hover:text-foreground px-1 select-none"
         title="Drag to reorder"
       >
         ⠿
       </button>
       <button
         onClick={() => onSelect(index)}
-        className="flex-1 text-left min-w-0"
+        className="flex-1 text-left min-w-0 cursor-pointer"
       >
-        <div className="text-sm text-slate-50 truncate">{item.title}</div>
-        <div className="text-xs text-slate-600">
+        <div className="text-sm text-foreground font-medium truncate">{item.title}</div>
+        <div className="text-xs text-muted-foreground">
           {item.type === "song" ? "Song" : "Verse"} · {item.slides.length} slide
           {item.slides.length !== 1 ? "s" : ""}
         </div>
       </button>
       <button
         onClick={() => onRemove(item.id)}
-        className="text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 px-2 text-sm"
+        className="text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 px-2 text-sm cursor-pointer transition-opacity"
         title="Remove from service"
       >
         ✕
@@ -92,13 +92,13 @@ export default function ServiceOrderPanel() {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="px-3 py-2 text-xs uppercase tracking-wide text-slate-600 border-b border-slate-800">
+    <div className="flex flex-col h-full bg-card">
+      <div className="px-3 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground border-b border-border">
         Service order
       </div>
       <div className="flex-1 overflow-y-auto p-2">
         {serviceOrder.length === 0 && (
-          <p className="text-slate-600 text-sm px-2 py-4">
+          <p className="text-muted-foreground text-sm px-2 py-4">
             Queue is empty — add songs or verses from the left.
           </p>
         )}

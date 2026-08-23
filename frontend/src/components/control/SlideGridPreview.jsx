@@ -11,15 +11,15 @@ export default function SlideGridPreview() {
 
   if (!item) {
     return (
-      <div className="h-full flex items-center justify-center text-slate-600 text-sm">
+      <div className="h-full flex items-center justify-center text-muted-foreground text-sm bg-background">
         Select an item from the service order to see its slides.
       </div>
     );
   }
 
   return (
-    <div className="h-full overflow-y-auto p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-600 mb-3">
+    <div className="h-full overflow-y-auto p-4 bg-background">
+      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
         {item.title}
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -29,15 +29,15 @@ export default function SlideGridPreview() {
             <button
               key={i}
               onClick={() => goToSlide(i)}
-              className={`text-left aspect-video rounded-lg p-3 bg-slate-950 border-2 flex flex-col justify-between overflow-hidden ${
+              className={`text-left aspect-video rounded-lg p-3 bg-slate-950 border-2 flex flex-col justify-between overflow-hidden cursor-pointer transition-all ${
                 isLive
-                  ? "border-amber-500"
-                  : "border-slate-700 hover:border-slate-600"
+                  ? "border-amber-500 shadow-md scale-[0.98]"
+                  : "border-border hover:border-muted-foreground/40"
               }`}
             >
               <span
-                className={`text-[10px] uppercase tracking-wide ${
-                  isLive ? "text-amber-400" : "text-slate-600"
+                className={`text-[10px] uppercase tracking-wide font-semibold ${
+                  isLive ? "text-amber-500" : "text-muted-foreground"
                 }`}
               >
                 {slide.label}
