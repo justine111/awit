@@ -12,7 +12,7 @@ export const useDisplayStore = create((set) => {
       } else if (type === MSG.BLACKOUT) {
         set({ status: "blackout" });
       } else if (type === MSG.CLEAR) {
-        set({ status: "clear" });
+        set({ status: "clear", theme: theme || get().theme });
       }
     };
     // Ask the Control window to resend whatever is currently live —

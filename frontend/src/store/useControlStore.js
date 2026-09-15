@@ -1,5 +1,9 @@
 import { create } from "zustand";
 import { getChannel, MSG } from "@/lib/broadcast";
+import {
+  persistServiceOrder,
+  loadServiceOrder,
+} from "@/lib/db";
 
 const channel = getChannel();
 
@@ -8,12 +12,32 @@ const DEFAULT_THEME = {
   backgroundMode: "color",
   background: "#0a0c10", // used when backgroundMode === 'color'
   animatedPreset: "aurora", // used when backgroundMode === 'animated'
-  mediaId: null, // used when backgroundMode === 'image' | 'video' (id in the `media` Dexie table)
+  mediaId: null, // used when backgroundMode === 'image' | 'video'
   overlayOpacity: 0.45, // dark scrim over image/video/animated so text stays readable
   textColor: "#f5f2ea",
   accentColor: "#f0b45c",
   fontSize: "clamp(2.2rem, 5vw, 4.5rem)",
+  fontFamily: "'Geist Variable', sans-serif",
 };
+
+// Load theme from localStorage synchronously (safe: no async needed for theme).
+function loadTheme() {
+  try {
+    const raw = localStorage.getItem("verseside-theme");
+    if (raw) return { ...DEFAULT_THEME, ...JSON.parse(raw) };
+  } catch {
+    /* ignore malformed JSON */
+  }
+  return DEFAULT_THEME;
+}
+
+function saveTheme(theme) {
+  try {
+    localStorage.setItem("verseside-theme", JSON.stringify(theme));
+  } catch {
+    /* quota exceeded — ignore */
+  }
+}
 
 export const useControlStore = create((set, get) => {
   // Reply to the Display window whenever it asks "what's live right now?"
@@ -32,10 +56,22 @@ export const useControlStore = create((set, get) => {
     currentItemIndex: -1,
     currentSlideIndex: 0,
     liveState: "clear", // 'live' | 'blackout' | 'clear'
-    theme: DEFAULT_THEME,
+    theme: loadTheme(), // hydrated synchronously from localStorage
+
+    // Call this once on app mount to restore a saved service order from Dexie.
+    hydrateServiceOrder: async () => {
+      const items = await loadServiceOrder();
+      if (items.length > 0) {
+        set({ serviceOrder: items });
+      }
+    },
 
     addToServiceOrder: (item) =>
-      set((s) => ({ serviceOrder: [...s.serviceOrder, item] })),
+      set((s) => {
+        const serviceOrder = [...s.serviceOrder, item];
+        persistServiceOrder(serviceOrder);
+        return { serviceOrder };
+      }),
 
     removeFromServiceOrder: (id) =>
       set((s) => {
@@ -44,6 +80,7 @@ export const useControlStore = create((set, get) => {
         let currentItemIndex = s.currentItemIndex;
         if (idx === currentItemIndex) currentItemIndex = -1;
         else if (idx < currentItemIndex) currentItemIndex -= 1;
+        persistServiceOrder(serviceOrder);
         return { serviceOrder, currentItemIndex };
       }),
 
@@ -54,7 +91,14 @@ export const useControlStore = create((set, get) => {
         items.splice(toIndex, 0, moved);
         let currentItemIndex = s.currentItemIndex;
         if (fromIndex === currentItemIndex) currentItemIndex = toIndex;
+        persistServiceOrder(items);
         return { serviceOrder: items, currentItemIndex };
+      }),
+
+    clearServiceOrder: () =>
+      set(() => {
+        persistServiceOrder([]);
+        return { serviceOrder: [], currentItemIndex: -1, currentSlideIndex: 0, liveState: "clear" };
       }),
 
     selectItem: (index) => {
@@ -114,7 +158,17 @@ export const useControlStore = create((set, get) => {
     },
 
     updateTheme: (partial) => {
-      set((s) => ({ theme: { ...s.theme, ...partial } }));
+      set((s) => {
+        const theme = { ...s.theme, ...partial };
+        saveTheme(theme);
+        return { theme };
+      });
+      broadcastCurrent(get());
+    },
+
+    resetTheme: () => {
+      saveTheme(DEFAULT_THEME);
+      set({ theme: DEFAULT_THEME });
       broadcastCurrent(get());
     },
   };
@@ -127,7 +181,7 @@ function broadcastCurrent(state) {
     return;
   }
   if (state.liveState === "clear" || state.currentItemIndex === -1) {
-    channel.postMessage({ type: MSG.CLEAR });
+    channel.postMessage({ type: MSG.CLEAR, theme: state.theme });
     return;
   }
   const item = state.serviceOrder[state.currentItemIndex];

@@ -28,7 +28,13 @@ export default function DisplayWindow() {
 
   return (
     <div className="w-screen h-screen cursor-none">
-      <SlideRenderer status={status} slide={slide} theme={theme} meta={meta} />
+      <SlideRenderer
+        status={status}
+        slide={slide}
+        theme={theme}
+        meta={meta}
+        showMeta={true}
+      />
     </div>
   );
 }
