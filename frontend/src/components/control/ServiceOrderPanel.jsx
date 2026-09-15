@@ -15,9 +15,9 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useControlStore } from "@/store/useControlStore";
-import { Trash2 } from "lucide-react";
+import { Trash2, Music, BookOpen } from "lucide-react";
 
-const TYPE_ICON = { song: "🎵", verse: "📖" };
+const TYPE_ICON = { song: <Music size={18} />, verse: <BookOpen size={18} /> };
 
 function Row({ item, index, isActive, onSelect, onRemove }) {
   const {
@@ -41,7 +41,7 @@ function Row({ item, index, isActive, onSelect, onRemove }) {
       style={style}
       className={`flex items-center gap-2 px-2 py-2 rounded-lg group transition-colors ${
         isActive
-          ? "bg-amber-500/10 border border-amber-500/30"
+          ? "bg-sky-500/10 border border-sky-500/30"
           : "hover:bg-muted border border-transparent"
       }`}
     >
@@ -49,7 +49,7 @@ function Row({ item, index, isActive, onSelect, onRemove }) {
       <button
         {...attributes}
         {...listeners}
-        className="cursor-grab text-muted-foreground hover:text-foreground px-1 select-none"
+        className="cursor-grab text-gray-100 hover:text-foreground px-1 select-none"
         title="Drag to reorder"
         aria-label="Drag to reorder"
         aria-roledescription="sortable item handle"
@@ -68,15 +68,14 @@ function Row({ item, index, isActive, onSelect, onRemove }) {
         className="flex-1 text-left min-w-0 cursor-pointer"
         aria-label={`Select ${item.title}`}
       >
-        <div className={`text-sm font-medium truncate ${isActive ? "text-amber-500" : "text-foreground"}`}>
+        <div
+          className={`text-sm font-medium truncate ${isActive ? "text-sky-500" : "text-foreground"}`}
+        >
           {item.title}
         </div>
         <div className="text-xs text-muted-foreground">
           {item.type === "song" ? "Song" : "Verse"} · {item.slides.length} slide
           {item.slides.length !== 1 ? "s" : ""}
-          {isActive && (
-            <span className="ml-1 text-amber-500 font-semibold">· Live</span>
-          )}
         </div>
       </button>
 
@@ -97,7 +96,9 @@ export default function ServiceOrderPanel() {
   const serviceOrder = useControlStore((s) => s.serviceOrder);
   const currentItemIndex = useControlStore((s) => s.currentItemIndex);
   const selectItem = useControlStore((s) => s.selectItem);
-  const removeFromServiceOrder = useControlStore((s) => s.removeFromServiceOrder);
+  const removeFromServiceOrder = useControlStore(
+    (s) => s.removeFromServiceOrder,
+  );
   const reorderServiceOrder = useControlStore((s) => s.reorderServiceOrder);
   const clearServiceOrder = useControlStore((s) => s.clearServiceOrder);
 
@@ -123,7 +124,10 @@ export default function ServiceOrderPanel() {
     if (serviceOrder.length === 0) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      const next = Math.min((currentItemIndex ?? -1) + 1, serviceOrder.length - 1);
+      const next = Math.min(
+        (currentItemIndex ?? -1) + 1,
+        serviceOrder.length - 1,
+      );
       selectItem(next);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
@@ -139,13 +143,16 @@ export default function ServiceOrderPanel() {
         <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Service Order
           {serviceOrder.length > 0 && (
-            <span className="ml-1.5 text-foreground/50">({serviceOrder.length})</span>
+            <span className="ml-1.5 text-foreground/50">
+              ({serviceOrder.length})
+            </span>
           )}
         </span>
         {serviceOrder.length > 0 && (
           <button
             onClick={() => {
-              if (confirm("Clear the entire service order?")) clearServiceOrder();
+              if (confirm("Clear the entire service order?"))
+                clearServiceOrder();
             }}
             className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-red-500 transition-colors cursor-pointer"
             title="Clear all items"
