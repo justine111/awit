@@ -20,57 +20,43 @@ function SlideThumbnail({ slide, theme, isLive, onClick }) {
     <button
       onClick={onClick}
       aria-label={`${isLive ? "Currently live: " : ""}Slide: ${slide.label}`}
-      className={`relative aspect-video rounded-lg overflow-hidden border-2 cursor-pointer transition-all focus-visible:outline-2 focus-visible:outline-sky-500 ${
+      className={`relative aspect-video rounded-lg overflow-hidden cursor-pointer transition-all duration-200 focus-visible:outline-2 focus-visible:outline-sky-500 ${
         isLive
-          ? "border-sky-500 shadow-lg shadow-sky-500/20 scale-[0.97]"
-          : "border-border hover:border-muted-foreground/50"
+          ? "ring-2 ring-sky-500 ring-offset-1 ring-offset-background shadow-lg shadow-sky-500/25 scale-[0.97]"
+          : "border border-white/8 hover:border-white/18 hover:scale-[1.01] hover:shadow-md"
       }`}
       style={{
         background:
           t.backgroundMode === "color" ? t.background || "#0a0c10" : "#0a0c10",
       }}
     >
-      {/* Animated gradient background */}
       {t.backgroundMode === "animated" && (
         <div className={`absolute inset-0 ${bgClass}`} />
       )}
-      {/* Image background */}
       {t.backgroundMode === "image" && mediaUrl && (
-        <img
-          src={mediaUrl}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <img src={mediaUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
       )}
-      {/* Video background (static thumbnail — just show overlay) */}
       {t.backgroundMode === "video" && (
         <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
           <span className="text-white/30 text-lg">▶</span>
         </div>
       )}
-      {/* Dim scrim */}
       {t.backgroundMode !== "color" && (
-        <div
-          className="absolute inset-0"
-          style={{ backgroundColor: `rgba(0,0,0,${t.overlayOpacity ?? 0.45})` }}
-        />
+        <div className="absolute inset-0" style={{ backgroundColor: `rgba(0,0,0,${t.overlayOpacity ?? 0.45})` }} />
       )}
-
-      {/* Text content */}
       <div className="absolute inset-0 flex flex-col justify-between p-2 z-10">
-        <span
-          className="text-[9px] uppercase tracking-wide font-bold leading-tight"
-          style={{ color: t.accentColor || "#f0b45c" }}
-        >
+        <span className="text-[9px] uppercase tracking-wide font-bold leading-tight" style={{ color: t.accentColor || "#f0b45c" }}>
           {slide.label}
         </span>
-        <span
-          className="text-[8px] leading-snug line-clamp-4 font-semibold"
-          style={{ color: t.textColor || "#f5f2ea" }}
-        >
+        <span className="text-[8px] leading-snug line-clamp-4 font-semibold" style={{ color: t.textColor || "#f5f2ea" }}>
           {slide.lines.join(" ")}
         </span>
       </div>
+      {isLive && (
+        <div className="absolute top-1.5 right-1.5 z-20">
+          <span className="live-dot" />
+        </div>
+      )}
     </button>
   );
 }
@@ -87,10 +73,12 @@ export default function SlideGridPreview() {
 
   if (!item) {
     return (
-      <div className="h-full flex flex-col items-center justify-center gap-2 text-muted-foreground bg-background">
-        <p className="text-sm">
-          Select an item from the service order to see its slides.
-        </p>
+      <div className="h-full flex flex-col items-center justify-center gap-3 text-muted-foreground/50 bg-background">
+        <div className="w-12 h-12 rounded-xl bg-muted/30 flex items-center justify-center">
+          <span className="text-xl">🎞️</span>
+        </div>
+        <p className="text-sm font-medium">Select an item from the service order</p>
+        <p className="text-xs">Its slides will appear here</p>
       </div>
     );
   }
@@ -98,11 +86,9 @@ export default function SlideGridPreview() {
   return (
     <div className="h-full flex flex-col bg-background overflow-hidden">
       {/* Header */}
-      <div className="px-4 py-2.5 shrink-0 flex items-center justify-between">
-        <div className="text-sm font-semibold uppercase tracking-wide text-sky-500 truncate">
-          {item.title}
-        </div>
-        <span className="text-sm text-muted-foreground uppercase shrink-0 ml-2">
+      <div className="px-4 py-2 shrink-0 flex items-center justify-between border-b border-border/50">
+        <div className="text-[13px] font-semibold text-foreground/90 truncate">{item.title}</div>
+        <span className="text-[11px] text-muted-foreground/60 shrink-0 ml-2 bg-muted/30 px-2 py-0.5 rounded-full">
           {item.slides.length} slide{item.slides.length !== 1 ? "s" : ""}
         </span>
       </div>

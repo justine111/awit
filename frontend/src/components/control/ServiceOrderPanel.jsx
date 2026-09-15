@@ -39,17 +39,22 @@ function Row({ item, index, isActive, onSelect, onRemove }) {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-2 px-2 py-2 rounded-lg group transition-colors ${
+      className={`flex items-center gap-2 px-2 py-1.5 rounded-lg group transition-all cursor-default ${
         isActive
-          ? "bg-sky-500/10 border border-sky-500/30"
-          : "hover:bg-muted border border-transparent"
+          ? "bg-sky-500/8 border border-sky-500/20 relative"
+          : "hover:bg-muted/30 border border-transparent"
       }`}
     >
+      {/* Active left accent */}
+      {isActive && (
+        <div className="absolute left-0 inset-y-2 w-0.5 bg-sky-500 rounded-r-full" />
+      )}
+
       {/* Drag handle */}
       <button
         {...attributes}
         {...listeners}
-        className="cursor-grab text-gray-100 hover:text-foreground px-1 select-none"
+        className="cursor-grab text-muted-foreground/30 hover:text-muted-foreground/70 px-1 select-none text-base leading-none transition-colors"
         title="Drag to reorder"
         aria-label="Drag to reorder"
         aria-roledescription="sortable item handle"
@@ -58,7 +63,7 @@ function Row({ item, index, isActive, onSelect, onRemove }) {
       </button>
 
       {/* Type icon */}
-      <span className="text-sm shrink-0" aria-hidden="true">
+      <span className={`shrink-0 ${isActive ? "text-sky-400" : "text-muted-foreground/50"}`} aria-hidden="true">
         {TYPE_ICON[item.type] ?? "📄"}
       </span>
 
@@ -68,21 +73,18 @@ function Row({ item, index, isActive, onSelect, onRemove }) {
         className="flex-1 text-left min-w-0 cursor-pointer"
         aria-label={`Select ${item.title}`}
       >
-        <div
-          className={`text-sm font-medium truncate ${isActive ? "text-sky-500" : "text-foreground"}`}
-        >
+        <div className={`text-[13px] font-medium truncate ${isActive ? "text-sky-400" : "text-foreground/90"}`}>
           {item.title}
         </div>
-        <div className="text-xs text-muted-foreground">
-          {item.type === "song" ? "Song" : "Verse"} · {item.slides.length} slide
-          {item.slides.length !== 1 ? "s" : ""}
+        <div className="text-[10px] text-muted-foreground/50">
+          {item.type === "song" ? "Song" : "Verse"} · {item.slides.length} slide{item.slides.length !== 1 ? "s" : ""}
         </div>
       </button>
 
-      {/* Remove button */}
+      {/* Remove */}
       <button
         onClick={() => onRemove(item.id)}
-        className="text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 px-1.5 cursor-pointer transition-opacity"
+        className="text-muted-foreground/20 hover:text-red-400 opacity-0 group-hover:opacity-100 p-1 rounded cursor-pointer transition-all"
         title="Remove from service"
         aria-label={`Remove ${item.title} from service order`}
       >
@@ -137,28 +139,25 @@ export default function ServiceOrderPanel() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-card">
+    <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-3 py-2.5 flex items-center justify-between border-b border-border shrink-0">
-        <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+      <div className="px-3 py-2 flex items-center justify-between border-b border-border/60 shrink-0">
+        <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/70">
           Service Order
           {serviceOrder.length > 0 && (
-            <span className="ml-1.5 text-foreground/50">
-              ({serviceOrder.length})
+            <span className="ml-1.5 bg-muted/50 text-foreground/50 px-1.5 py-0.5 rounded-full text-[10px]">
+              {serviceOrder.length}
             </span>
           )}
         </span>
         {serviceOrder.length > 0 && (
           <button
-            onClick={() => {
-              if (confirm("Clear the entire service order?"))
-                clearServiceOrder();
-            }}
-            className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-red-500 transition-colors cursor-pointer"
+            onClick={() => { if (confirm("Clear the entire service order?")) clearServiceOrder(); }}
+            className="flex items-center gap-1 text-[10px] text-muted-foreground/40 hover:text-red-400 transition-colors cursor-pointer"
             title="Clear all items"
             aria-label="Clear all service order items"
           >
-            <Trash2 className="w-3 h-3" /> Clear all
+            <Trash2 className="w-3 h-3" /> Clear
           </button>
         )}
       </div>

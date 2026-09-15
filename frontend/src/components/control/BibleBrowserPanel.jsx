@@ -36,36 +36,28 @@ const fuse = new Fuse(OFFLINE_VERSES, {
 function PassagePreview({ result, loading, error }) {
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-6 text-muted-foreground text-sm">
+      <div className="flex items-center justify-center py-5 text-muted-foreground/60 text-sm">
         <span className="animate-pulse">Loading…</span>
       </div>
     );
   }
   if (error) {
-    return <p className="text-xs text-red-400 py-3 px-1">{error}</p>;
+    return <p className="text-[11px] text-red-400/80 py-2 px-1">{error}</p>;
   }
   if (!result || result.verses.length === 0) return null;
 
   return (
-    <div className="rounded-lg border border-border bg-muted/30 p-3 space-y-2">
+    <div className="rounded-lg border border-white/8 bg-white/3 p-3 space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-sky-500">
-          {result.reference}
-        </span>
-        <span className="text-[10px] text-muted-foreground">
-          {result.translationName}
-          {result.offline && " ·  offline"}
+        <span className="text-[11px] font-bold text-sky-400">{result.reference}</span>
+        <span className="text-[10px] text-muted-foreground/40">
+          {result.translationName}{result.offline && " · offline"}
         </span>
       </div>
-      <div className="space-y-1 max-h-56 overflow-y-auto">
+      <div className="space-y-1 max-h-48 overflow-y-auto">
         {result.verses.map((v) => (
-          <p
-            key={v.verse}
-            className="text-xs text-foreground/80 leading-relaxed"
-          >
-            <sup className="text-sky-500 font-semibold mr-1 not-italic">
-              {v.verse}
-            </sup>
+          <p key={v.verse} className="text-[11px] text-foreground/75 leading-relaxed">
+            <sup className="text-sky-400/80 font-bold mr-1 not-italic">{v.verse}</sup>
             {v.text}
           </p>
         ))}
@@ -167,7 +159,7 @@ export default function BibleBrowserPanel() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-card text-foreground">
+    <div className="flex flex-col h-full text-foreground">
       {/* Translation bar */}
       <div className="px-3 pt-3 pb-2 flex items-center gap-2 border-b border-border">
         <span className="text-xs text-muted-foreground shrink-0">
@@ -179,11 +171,10 @@ export default function BibleBrowserPanel() {
               key={t.id}
               onClick={() => setTranslation(t.id)}
               title={t.name}
-              className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
-                translation === t.id
+              className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${translation === t.id
                   ? "bg-sky-700 text-white"
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
+                }`}
             >
               {t.label}
             </button>
@@ -197,11 +188,10 @@ export default function BibleBrowserPanel() {
           <button
             key={m}
             onClick={() => setMode(m)}
-            className={`flex-1 flex items-center justify-center gap-2 py-2 text-xs font-semibold uppercase tracking-wide transition-colors cursor-pointer ${
-              mode === m
+            className={`flex-1 flex items-center justify-center gap-2 py-2 text-xs font-semibold uppercase tracking-wide transition-colors cursor-pointer ${mode === m
                 ? "text-white border-b-2 border-sky-700"
                 : "text-muted-foreground hover:text-foreground"
-            }`}
+              }`}
           >
             {m === "browse" ? (
               <>
@@ -327,7 +317,7 @@ export default function BibleBrowserPanel() {
             <button
               onClick={handleAddPassage}
               disabled={!passageResult || passageResult.verses.length === 0}
-              className="w-full py-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white text-sm font-bold disabled:opacity-40 transition-colors cursor-pointer"
+              className="w-full py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-white text-[11px] font-bold disabled:opacity-30 transition-all cursor-pointer shadow-md shadow-sky-500/20"
             >
               + Add to Service Order
             </button>
@@ -353,14 +343,10 @@ export default function BibleBrowserPanel() {
                   <button
                     key={ref}
                     onClick={() => handleAddSearchVerse(v)}
-                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-muted text-sm group cursor-pointer text-foreground"
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/4 border border-transparent hover:border-white/6 text-sm group cursor-pointer text-foreground transition-all"
                   >
-                    <div className="text-sky-500 text-xs font-semibold mb-0.5">
-                      {ref}
-                    </div>
-                    <div className="text-foreground/80 line-clamp-2">
-                      {v.text}
-                    </div>
+                    <div className="text-sky-400 text-[10px] font-bold mb-0.5">{ref}</div>
+                    <div className="text-foreground/70 line-clamp-2 text-[11px]">{v.text}</div>
                   </button>
                 );
               })}

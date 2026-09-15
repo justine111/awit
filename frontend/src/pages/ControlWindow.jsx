@@ -7,27 +7,13 @@ import ServiceOrderPanel from "@/components/control/ServiceOrderPanel";
 import SlideGridPreview from "@/components/control/SlideGridPreview";
 import LiveControlBar from "@/components/control/LiveControlBar";
 import ThemeSettingsPanel from "@/components/control/ThemeSettingPanel";
-
-import { Button } from "@/components/ui/button";
-import {
-  RadioTower,
-  Sun,
-  Moon,
-  Monitor,
-  MonitorOff,
-  Music,
-  BookOpen,
-  Palette,
-} from "lucide-react";
+import { RadioTower, Sun, Moon, Monitor, MonitorOff, Music, BookOpen, Palette } from "lucide-react";
 
 export default function ControlWindow() {
   const [tab, setTab] = useState("songs");
   const displayWinRef = useRef(null);
   const pollRef = useRef(null);
-
-  // Track whether the display popup window is open
   const [displayOpen, setDisplayOpen] = useState(false);
-
   const hydrateServiceOrder = useControlStore((s) => s.hydrateServiceOrder);
 
   const [isDark, setIsDark] = useState(() => {
@@ -52,7 +38,6 @@ export default function ControlWindow() {
     hydrateServiceOrder();
   }, [hydrateServiceOrder]);
 
-  // Poll the display window's closed state every second
   const startPolling = useCallback(() => {
     clearInterval(pollRef.current);
     pollRef.current = setInterval(() => {
@@ -66,16 +51,15 @@ export default function ControlWindow() {
   useEffect(() => () => clearInterval(pollRef.current), []);
 
   function openDisplayWindow() {
-    // If already open and not closed, focus it
     if (displayWinRef.current && !displayWinRef.current.closed) {
       displayWinRef.current.focus();
       return;
     }
-    const url = `${window.location.origin}${window.location.pathname}#/display`;
+    const url = `${window.location.origin}#/display`;
     displayWinRef.current = window.open(
       url,
       "verseside-display",
-      "width=1280,height=720,menubar=no,toolbar=no,location=no,status=no",
+      "width=1280,height=720,menubar=no,toolbar=no,location=no,status=no"
     );
     if (displayWinRef.current) {
       setDisplayOpen(true);
@@ -83,99 +67,79 @@ export default function ControlWindow() {
     }
   }
 
+  const TABS = [
+    { id: "songs", label: "Songs", icon: <Music size={14} /> },
+    { id: "bible", label: "Bible", icon: <BookOpen size={14} /> },
+    { id: "background", label: "Theme", icon: <Palette size={14} /> },
+  ];
+
   return (
     <div className="h-screen flex flex-col bg-background text-foreground font-sans select-none overflow-hidden">
-      {/* ── Header ── */}
-      <header className="h-14 shrink-0 flex items-center justify-between px-5 border-b border-border bg-card/90 backdrop-blur-md z-20">
-        {/* Logo */}
-        <div className="flex items-center gap-2.5">
-          <div className="flex flex-col items-start leading-tight">
-            <div className="font-display font-black text-base tracking-tight">
-              Verse<span className="text-sky-700">Side</span>
-            </div>
-            <p className="text-[9px] font-bold text-muted-foreground/90 tracking-wide uppercase">
-              Church Worship Presenter
-            </p>
+      {/* Header */}
+      <header className="h-12 shrink-0 flex items-center justify-between px-4 border-b border-border bg-card/80 backdrop-blur-xl z-20 relative">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500/40 to-transparent" />
+        <div className="flex flex-col items-start leading-4">
+          <div className="font-black text-[15px] tracking-tight text-foreground">
+            Verse<span className="text-sky-400">Side</span>
           </div>
+          <p className="text-[8.5px] font-semibold text-muted-foreground/60 tracking-widest uppercase">
+            Worship Presenter
+          </p>
         </div>
 
-        {/* Header actions */}
         <div className="flex items-center gap-2">
-          {/* Display window status badge */}
           {displayOpen ? (
-            <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 text-xs font-semibold animate-fade-in">
-              <Monitor className="w-3.5 h-3.5" />
-              Display Active
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-semibold">
+              <span className="live-dot" style={{ background: "#10b981", width: 5, height: 5 }} />
+              Display Live
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-muted/60 border border-border text-muted-foreground text-xs font-medium">
-              <MonitorOff className="w-3.5 h-3.5" />
-              Display Offline
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/30 border border-border text-muted-foreground text-[11px]">
+              <MonitorOff className="w-3 h-3" /> No Display
             </div>
           )}
 
-          {/* Dark mode toggle */}
-          <Button
+          <button
             onClick={() => setIsDark(!isDark)}
-            variant="ghost"
-            size="icon"
-            className="rounded-xl h-7 w-7 bg-gray-100 dark:bg-sky-700 text-muted-foreground hover:text-foreground cursor-pointer transition-all"
-            title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            className="h-7 w-7 rounded-lg flex items-center justify-center border border-border bg-muted/20 hover:bg-muted/50 text-muted-foreground hover:text-foreground cursor-pointer transition-all"
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
-            {isDark ? (
-              <Sun className="w-5 h-5 text-white" />
-            ) : (
-              <Moon className="w-5 h-5 text-black" />
-            )}
-          </Button>
+            {isDark ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+          </button>
 
-          {/* Go Live / Reopen */}
-          <Button
+          <button
             onClick={openDisplayWindow}
-            variant="amber"
-            className="px-2 py-1 rounded-lg bg-sky-700 text-white text-xs uppercase font-bold cursor-pointer shadow-md"
-            aria-label={
-              displayOpen ? "Focus display window" : "Open display window"
-            }
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wide cursor-pointer transition-all bg-sky-500 hover:bg-sky-400 text-white shadow-md shadow-sky-500/20 active:scale-95"
+            aria-label={displayOpen ? "Focus display window" : "Open display window"}
           >
             {displayOpen ? (
               <>
-                <Monitor className="w-3.5 h-3.5" /> Focus Display
+                <Monitor className="w-3.5 h-3.5" /> Focus
               </>
             ) : (
               <>
                 <RadioTower className="w-3.5 h-3.5" /> Go Live
               </>
             )}
-          </Button>
+          </button>
         </div>
       </header>
 
-      {/* ── Main layout ── */}
-      <div className="flex-1 flex min-h-0 bg-background/50">
-        {/* Left: library panel */}
-        <div className="w-96 shrink-0 border-r border-border bg-card/60 flex flex-col min-h-0 shadow-sm">
-          <div className="flex border-b border-border/80 p-1 bg-muted/30 shrink-0 gap-1">
-            {[
-              { id: "songs", label: "Songs", icon: <Music size={18} /> },
-              { id: "bible", label: "Bible", icon: <BookOpen size={18} /> },
-              {
-                id: "background",
-                label: "Theme",
-                icon: <Palette size={18} />,
-              },
-            ].map(({ id, label, icon }) => (
+      {/* Main layout */}
+      <div className="flex-1 flex min-h-0 bg-background">
+        {/* Left: library */}
+        <div className="w-[22rem] shrink-0 border-r border-border flex flex-col min-h-0 bg-card/30">
+          <div className="flex shrink-0 p-1.5 gap-1 border-b border-border bg-card/50">
+            {TABS.map(({ id, label, icon }) => (
               <button
                 key={id}
                 onClick={() => setTab(id)}
-                className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                  tab === id
-                    ? "bg-card text-sky-700 border border-border/60 dark:bg-sky-700 dark:text-white"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
+                className={`flex-1 py-1.5 px-2 rounded-md text-[11px] font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${tab === id
+                  ? "bg-white/10 text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                  }`}
               >
-                <span>{icon}</span>
+                <span className={tab === id ? "text-sky-400" : ""}>{icon}</span>
                 {label}
               </button>
             ))}
@@ -187,18 +151,17 @@ export default function ControlWindow() {
           </div>
         </div>
 
-        {/* Middle: slide grid preview */}
-        <div className="flex-1 min-w-0 flex flex-col bg-background/30">
+        {/* Middle: slide grid */}
+        <div className="flex-1 min-w-0 flex flex-col">
           <SlideGridPreview />
         </div>
 
         {/* Right: service order */}
-        <div className="w-72 shrink-0 border-l border-border bg-card/60 min-h-0 shadow-sm">
+        <div className="w-[17rem] shrink-0 border-l border-border bg-card/30 min-h-0">
           <ServiceOrderPanel />
         </div>
       </div>
 
-      {/* ── Live control bar ── */}
       <LiveControlBar />
     </div>
   );
